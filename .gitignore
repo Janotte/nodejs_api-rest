@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 Install.md
+db/app.db
 
 # Editor directories and files
 .vscode/*
