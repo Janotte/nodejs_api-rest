@@ -26,11 +26,14 @@ export async function transactionsRoutes(app:FastifyInstance) {
     return reply.status(201).send({message: 'Transaction created successfully!'})
   })
 
+  // Get Transaction
   app.get('/', async () => {
     const transactions = await database('transactions')
       .select('*')
 
-    return transactions
+    return {
+      transactions: transactions
+    }
   })
     
 }
