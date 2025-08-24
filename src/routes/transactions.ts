@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { database } from '../database'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
+import { checkSessionIdExists } from '../middlewares/check-session-id'
 
 
 export async function transactionsRoutes(app:FastifyInstance) {
@@ -41,8 +42,11 @@ export async function transactionsRoutes(app:FastifyInstance) {
   })
 
   // Get all Transactions
-  app.get('/', async (request, reply) => {
+  app.get('/', {preHandler: [checkSessionIdExists] }, async (request, reply) => {
+    const { sessionId } = request.cookies
+
     const transactions = await database('transactions')
+      .where('session_id', sessionId)
       .select('*')
 
     return reply.status(200).send({
@@ -51,8 +55,10 @@ export async function transactionsRoutes(app:FastifyInstance) {
   })
 
   // Get Transaction by id
-  app.get('/:id', async (request, reply) => {
+  app.get('/:id', {preHandler: [checkSessionIdExists] },async (request, reply) => {
     try {
+      const { sessionId } = request.cookies
+
       const getTransactionParamsSchema = z.object({
         id: z.string().min(1),
       })
@@ -60,7 +66,7 @@ export async function transactionsRoutes(app:FastifyInstance) {
       const { id } = getTransactionParamsSchema.parse(request.params)
 
       const transaction = await database('transactions')
-        .where('id', id)
+        .where({'id': id, 'session_id': sessionId})
         .first()
       
       if (!transaction) {
@@ -84,8 +90,10 @@ export async function transactionsRoutes(app:FastifyInstance) {
   })
 
   // Get Summary
-  app.get('/summary', async (request, reply) => {
+  app.get('/summary', {preHandler: [checkSessionIdExists] }, async (request, reply) => {
+    const { sessionId } = request.cookies
     const summary = await database('transactions')
+      .where('session_id', sessionId)
       .sum('amount', { as: 'amount'})
       .first()
 
