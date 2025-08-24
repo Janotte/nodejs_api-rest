@@ -6,13 +6,13 @@
       "ESNext.Collection",
       "ESNext.Iterator"
     ],
-    "module": "nodenext",
+    "module": "commonjs",
     "target": "es2022",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node"
   }
 }

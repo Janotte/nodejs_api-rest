@@ -1,9 +1,11 @@
 import fastify from 'fastify'
+import { database } from './database'
 
 const app = fastify()
 
-app.get('/hello', () => {
-  return 'Hello Word!'
+app.get('/hello', async () => {
+  const tables = await database('sqlite_master').select('*')
+  return tables
 })
 
 app.listen({

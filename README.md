@@ -42,3 +42,14 @@ npm run dev
 ```
 
 O servidor estará rodando em `http://localhost:3333`
+
+## Banco de Dados
+
+O projeto está configurado com:
+- **Knex.js** como query builder
+- **SQLite3** como banco de dados
+- **TypeScript** para tipagem
+
+### Estrutura do Banco
+
+O banco de dados SQLite é criado automaticamente na pasta `tmp/app.db` quando o servidor é executado pela primeira vez.
