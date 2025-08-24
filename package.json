@@ -1,0 +1,30 @@
+{
+  "name": "02-restapi",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API Rest com Node JS e Fastify",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [],
+  "author": "Sandro André Janotte",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "fastify": "^5.5.0"
+  }
+}
