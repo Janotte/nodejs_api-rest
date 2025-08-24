@@ -1,28 +1,35 @@
 import { FastifyInstance } from 'fastify'
 import { database } from '../database'
+import { z } from 'zod'
 
 
 export async function transactionsRoutes(app:FastifyInstance) {
-  app.get('/hello', async () => {
-    const tables = await database('sqlite_master').select('*')
+  
+  // Create Transaction
+  app.post('/', async (request, reply) => {
 
-    return tables
-  })
+    const createTransactionBodySchema = z.object({
+      title: z.string(),
+      amount: z.number(),
+      type: z.enum(['credit', 'debit']),
+    })
 
-  app.post('/transactions', async () => {
-    const transactions = await database('transactions')
+    const { title, amount, type } = createTransactionBodySchema.parse(request.body)
+
+    await database('transactions')
       .insert({
         id: crypto.randomUUID(),
-        title: 'Transação de teste',
-        amount: 1000,
+        title,
+        amount: type === 'credit' ? amount: amount * -1
       })
-      .returning('*')
   
-    return transactions
+    return reply.status(201).send({message: 'Transaction created successfully!'})
   })
 
-  app.get('/transactions', async () => {
-    const transactions = await database('transactions').select('*')
+  app.get('/', async () => {
+    const transactions = await database('transactions')
+      .select('*')
+
     return transactions
   })
     
